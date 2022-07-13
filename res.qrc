@@ -1,0 +1,29 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/app.ico</file>
+        <file>images/application-exit.png</file>
+        <file>images/background.png</file>
+        <file>images/clear.png</file>
+        <file>images/connect.png</file>
+        <file>images/disconnect.png</file>
+        <file>images/settings.png</file>
+        <file>qss/mystyle.qss</file>
+        <file>images/tbtn1.ico</file>
+        <file>images/tbtn2.ico</file>
+        <file>images/tbtn3.ico</file>
+        <file>images/tbtn4.ico</file>
+        <file>images/tbtn5.ico</file>
+        <file>images/title.png</file>
+        <file>images/home.png</file>
+        <file>images/tbtn4.png</file>
+        <file>images/clear1.png</file>
+        <file>images/connect1.png</file>
+        <file>images/disconnect1.png</file>
+        <file>images/settings1.png</file>
+        <file>images/tbtn1.png</file>
+        <file>images/tbtn2.png</file>
+        <file>images/tbtn3.png</file>
+        <file>images/tbtn5.png</file>
+        <file>images/about.png</file>
+    </qresource>
+</RCC>
