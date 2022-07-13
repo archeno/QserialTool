@@ -2,7 +2,7 @@
 #define CCR_H
 
 #include <QMainWindow>
-#include "settingsdialog.h"
+#include "../settingsdialog.h"
 namespace Ui {
 class CCR;
 }
@@ -14,7 +14,7 @@ class CCR : public QMainWindow
 public:
     explicit CCR(QWidget *parent = nullptr);
     ~CCR();
- //   QMainWindow * m_mainPage;
+    QMainWindow * m_homepage;
 private:
     Ui::CCR *ui;
     SettingsDialog *m_serialSettings;

@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->tBtnCCR, &QToolButton::clicked, [=](){
         this->hide();
         m_ccr->show();
-      //  m_ccr->m_mainPage = this;
+        m_ccr->m_homepage = qobject_cast<QMainWindow *>(this);
     });
 }
 

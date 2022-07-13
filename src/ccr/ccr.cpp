@@ -1,6 +1,8 @@
 #include "ccr.h"
 #include "ui_ccr.h"
 #include <QPainter>
+#include "serial.h"
+
 CCR::CCR(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::CCR),
@@ -20,7 +22,6 @@ CCR::CCR(QWidget *parent) :
     ui->labA->setProperty("labtype", "displayvalue");
     ui->labV->setProperty("labtype", "displayvalue");
 
-
 }
 
 CCR::~CCR()
@@ -36,7 +37,9 @@ void CCR::initActionsConnections()
 {
     connect(ui->actionexit, &QAction::triggered, this, &QMainWindow::close);
     connect(ui->actionSerialConfig, &QAction::triggered, m_serialSettings, &SettingsDialog::show);
-   // connect(ui->actionhomepage, &QAction::triggered, )
+    connect(ui->actionconnect, &QAction::triggered, &Serial::instance(), &Serial::connectDevice);
+    //    connect(ui->actionhomepage, &QAction::triggered, static_cast<MainWindow *>(m_homepage), &QMainWindow::show);
+
 }
 
 /**
