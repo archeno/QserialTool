@@ -24,19 +24,23 @@ SOURCES += \
     misc/utilities.cpp \
     serial/serial.cpp \
     src/ccr/ccr.cpp \
+    src/datareveivewidget.cpp \
     src/mainwindow.cpp \
     src/settingsdialog.cpp
 
 
 HEADERS += \
+    datareveivewidget.h \
     misc/utilities.h \
     serial/serial.h \
     src/ccr/ccr.h \
+    src/datareveivewidget.h \
     src/mainwindow.h \
     src/settingsdialog.h
 
 FORMS += \
     ccr.ui \
+    datareveivewidget.ui \
     mainwindow.ui \
     settingsdialog.ui
 

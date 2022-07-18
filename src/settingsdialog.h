@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QSerialPort>
-
+#include "serial.h"
 namespace Ui {
 class SettingsDialog;
 }
@@ -15,7 +15,7 @@ class SettingsDialog : public QDialog
 public:
     explicit SettingsDialog(QWidget *parent = nullptr);
     ~SettingsDialog();
-
+    Serial* getSerial();
     struct Settings {
         QString name;
         qint32 baudRate;
@@ -33,6 +33,7 @@ public:
     Settings settings() const;
 public slots:
     void showDialog(void);
+
 private slots:
     void showPortInfo(int idx);
     void apply();
@@ -43,6 +44,7 @@ private:
     void fillPortsParameters();
     void fillPortsInfo();
     void updateSettings();
+    void paintEvent(QPaintEvent *) Q_DECL_OVERRIDE;
 
 
 private:

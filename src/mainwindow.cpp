@@ -2,26 +2,32 @@
 #include "ui_mainwindow.h"
 #include <QFile>
 #include <QPainter>
+#include <QDebug>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , m_ccr(new CCR)
+    , m_ccr(new CCR(this))
 {
     ui->setupUi(this);
     setWindowTitle(tr("助航灯调试上位机V1.0"));
     setWindowIcon(QIcon(":/images/app.ico"));
-    this->setFixedSize(900, 600);
+    this->resize(900, 600);
     initToolButton();
     connect(ui->tBtnCCR, &QToolButton::clicked, [=](){
         this->hide();
         m_ccr->show();
-        m_ccr->m_homepage = qobject_cast<QMainWindow *>(this);
+    });
+
+    connect(m_ccr, &CCR::backToHomepage, [=](){
+        m_ccr->hide();
+        this->show();
     });
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    qDebug()<<"mainwindow destroyed1";
 }
 
 /**

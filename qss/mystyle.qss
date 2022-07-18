@@ -39,8 +39,8 @@ margin:10px 2px;
 padding:18px;
 border-radius: 10px;
 font: 16pt "仿宋";
-} */
-
+} 
+*/
 QTabWidget QLabel[labtype='displayvalue']{
     font: 56px '微软雅黑',bold;
     color:brown
@@ -90,4 +90,27 @@ QTabBar::tab:selected {
 
 QTabBar::tab:!selected {
     margin-top: 2px; /* make non-selected tabs look smaller */
+}
+
+
+
+/**  QRadiobutton****/
+QRadioButton::indicator{
+    width:20px;
+    height: 20px;
+
+}
+QRadioButton::indicator:checked {
+    image: url(:/images/radio_select.png);
+}
+QRadioButton::indicator:unchecked {
+    image: url(:/images/radio_unselect.png);
+}
+
+QRadioButton::text:selected{
+    background-color: red;
+}
+
+QRadioButton::item:checked {
+    background:red;
 }

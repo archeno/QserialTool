@@ -24,13 +24,18 @@ Serial::Serial(QObject *parent) : QObject(parent)
     setStopBits(stopBitsList().indexOf("1"));
     setParity(parityList().indexOf(tr("None")));
     setFlowControl(flowControlList().indexOf(tr("None")));
+    refreshSerialDevices();
+    if(portList().count()>1)
+    {
+        setPortIndex(1);
+    }
 
     // clang-format off
 
-    // Build serial devices list and refresh it every second
-//    connect(&Misc::TimerEvents::instance(), &Misc::TimerEvents::timeout1Hz,
-//            this, &IO::Drivers::Serial::refreshSerialDevices);
-
+   //  Build serial devices list and refresh it every second
+    connect(&m_timerFreshPorts, &QTimer::timeout,
+            this, &Serial::refreshSerialDevices);
+    m_timerFreshPorts.start(1000);
     // Update connect button status when user selects serial device
 //    connect(this, &Serial::portIndexChanged,
 //            this, &Serial::configurationChanged);
@@ -132,12 +137,11 @@ bool Serial::open(const QIODevice::OpenMode mode)
 {
     // Ignore the first item of the list (Select Port)
     auto ports = validPorts();
-    auto portId = portIndex() - 1;
+    auto portId = portIndex();
     if (portId >= 0 && portId < validPorts().count())
     {
         // Update port index variable & disconnect from current serial port
         disconnectDevice();
-        m_portIndex = portId + 1;
         m_lastSerialDeviceIndex = m_portIndex;
         Q_EMIT portIndexChanged();
 
@@ -252,7 +256,7 @@ quint8 Serial::flowControlIndex() const
  *       be "Select Serial Device". This is inteded to make the user interface
  *       a little more friendly.
  */
-QStringList Serial::portList() const
+QMap<QString, QSerialPortInfo> Serial::portList() const
 {
     return m_portList;
 }
@@ -278,8 +282,9 @@ QStringList Serial::parityList() const
  */
 QStringList Serial::baudRateList() const
 {
-    return m_baudRateList;
+    return QStringList { "4800", "9600", "19200", "38400", "115200"};
 }
+
 
 /**
  * Returns a list with the available data bits configurations.
@@ -357,14 +362,16 @@ QSerialPort::FlowControl Serial::flowControl() const
     return m_flowControl;
 }
 
-void Serial::connectDevice()
+bool Serial::connectDevice()
 {
     if(port() == Q_NULLPTR)
     {
         if(!open(QIODevice::ReadOnly))
         {
             qDebug()<<"open serial error!"<<endl;
+            return false;
         }
+        return true;
     }
 }
 
@@ -609,23 +616,23 @@ void Serial::refreshSerialDevices()
 {
     // Create device list, starting with dummy header
     // (for a more friendly UI when no devices are attached)
-    QStringList ports;
-    ports.append(tr("Select port"));
+    //QStringList ports;
+    QMap<QString, QSerialPortInfo>ports;
 
     // Search for available ports and add them to the lsit
     auto validPortList = validPorts();
     Q_FOREACH (QSerialPortInfo info, validPortList)
     {
         if (!info.isNull())
-            ports.append(info.portName());
+            ports.insert(info.portName(), info);
     }
 
     // Update list only if necessary
-    if (portList() != ports)
+    if (portList().keys() != ports.keys())
     {
         // Update list
         m_portList = ports;
-
+        qDebug()<<m_portList.keys();
         // Update current port index
         if (port())
         {

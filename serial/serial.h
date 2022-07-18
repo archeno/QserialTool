@@ -4,7 +4,10 @@
 #include <QObject>
 #include <QSerialPort>
 #include <QSerialPortInfo>
+#include <QTimer>
 #include <QSettings>
+#include <QMap>
+
 class Serial : public QObject
 {
     Q_OBJECT
@@ -33,18 +36,15 @@ Q_SIGNALS:
 
 public:
     static Serial &instance();
-
-    //
-    // HAL functions
-    //
-    void close() ;
-    bool isOpen() const ;
-    bool isReadable() const ;
-    bool isWritable() const ;
-    bool configurationOk() const ;
+    void close();
+    bool isOpen() const;
+    bool isWritable()const;
+    bool isReadable() const;
+    bool configurationOk() const;
     quint64 write(const QByteArray &data) ;
     bool open(const QIODevice::OpenMode mode) ;
-
+    void disconnectDevice();
+    bool connectDevice();
     QString portName() const;
     QSerialPort *port() const;
     bool autoReconnect() const;
@@ -54,9 +54,8 @@ public:
     quint8 displayMode() const;
     quint8 dataBitsIndex() const;
     quint8 stopBitsIndex() const;
-    quint8 flowControlIndex() const;
-
-    QStringList portList() const;
+    quint8 flowControlIndex() const;    
+    QMap<QString, QSerialPortInfo> portList() const;
     QStringList parityList() const;
     QStringList baudRateList() const;
     QStringList dataBitsList() const;
@@ -70,8 +69,7 @@ public:
     QSerialPort::FlowControl flowControl() const;
 
 public Q_SLOTS:
-    void disconnectDevice();
-    void connectDevice();
+
     void setBaudRate(const qint32 rate);
     void setParity(const quint8 parityIndex);
     void setPortIndex(const quint8 portIndex);
@@ -88,12 +86,11 @@ private Q_SLOTS:
     void handleError(QSerialPort::SerialPortError error);
 private:
     QSerialPort *m_port;
-
+    QTimer m_timerFreshPorts;
     bool m_autoReconnect;
     int m_lastSerialDeviceIndex;
-
-    qint32 m_baudRate;
     QSettings m_settings;
+    qint32 m_baudRate;
     QSerialPort::Parity m_parity;
     QSerialPort::DataBits m_dataBits;
     QSerialPort::StopBits m_stopBits;
@@ -105,7 +102,8 @@ private:
     quint8 m_stopBitsIndex;
     quint8 m_flowControlIndex;
 
-    QStringList m_portList;
+    QMap<QString , QSerialPortInfo> m_portList;
+   // QStringList m_portList;
     QStringList m_baudRateList;
     QVector<QSerialPortInfo> validPorts() const;
 signals:

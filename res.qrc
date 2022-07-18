@@ -25,5 +25,9 @@
         <file>images/tbtn3.png</file>
         <file>images/tbtn5.png</file>
         <file>images/about.png</file>
+        <file>images/radio_select.png</file>
+        <file>images/radio_unselect.png</file>
+        <file>images/visualization.png</file>
+        <file>images/dataReceive.png</file>
     </qresource>
 </RCC>
